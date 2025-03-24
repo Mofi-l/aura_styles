@@ -1,6 +1,3 @@
-// widgetStyles.js
-export function injectWidgetStyles() {
-    const styles = `
 /* Core Widget Styling */
 #aux-widget {
     position: fixed;
@@ -16,7 +13,10 @@ export function injectWidgetStyles() {
     border-radius: 5px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     color: white;
-    transition: height 0.3s ease;
+    cursor: move;
+    user-select: none;
+    transition: transform 0.05s ease; /* Smooth movement while dragging */
+    will-change: transform; /* Optimize for animations */
 }
 
 /* Enhanced Dropdown Styling */
@@ -76,93 +76,6 @@ export function injectWidgetStyles() {
     color: white !important;
 }
 
-/* Animation Keyframes */
-@keyframes minimizeEffect {
-    0% {
-        transform: translate(0, 0) scale(1) rotate(0deg);
-        opacity: 1;
-        filter: brightness(1);
-    }
-    30% {
-        transform: translate(calc(var(--target-x) * 0.3), calc(var(--target-y) * 0.3)) 
-                  scale(0.8) rotate(-5deg);
-        opacity: 0.9;
-        filter: brightness(1.2);
-    }
-    60% {
-        transform: translate(calc(var(--target-x) * 0.6), calc(var(--target-y) * 0.6)) 
-                  scale(0.5) rotate(5deg);
-        opacity: 0.7;
-        filter: brightness(0.8);
-    }
-    100% {
-        transform: translate(var(--target-x), var(--target-y)) scale(0) rotate(0deg);
-        opacity: 0;
-        filter: brightness(0.5);
-    }
-}
-
-@keyframes maximizeEffect {
-    0% {
-        transform: translate(var(--target-x), var(--target-y)) scale(0) rotate(0deg);
-        opacity: 0;
-        filter: brightness(0.5);
-    }
-    40% {
-        transform: translate(calc(var(--target-x) * 0.6), calc(var(--target-y) * 0.6)) 
-                  scale(0.5) rotate(-5deg);
-        opacity: 0.7;
-        filter: brightness(0.8);
-    }
-    70% {
-        transform: translate(calc(var(--target-x) * 0.3), calc(var(--target-y) * 0.3)) 
-                  scale(0.8) rotate(5deg);
-        opacity: 0.9;
-        filter: brightness(1.2);
-    }
-    100% {
-        transform: translate(0, 0) scale(1) rotate(0deg);
-        opacity: 1;
-        filter: brightness(1);
-    }
-}
-
-}
-
-/* Add blur effect during animation */
-@keyframes blurEffect {
-    0% { backdrop-filter: blur(0px); }
-    50% { backdrop-filter: blur(3px); }
-    100% { backdrop-filter: blur(0px); }
-}
-
-/* Animation Classes */
-#aux-widget.minimizing {
-    animation: 
-        minimizeEffect 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards,
-        blurEffect 0.8s ease forwards;
-    transform-origin: center center;
-}
-
-#aux-widget.maximizing {
-    animation: 
-        maximizeEffect 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards,
-        blurEffect 0.8s ease forwards;
-    transform-origin: center center;
-}
-
-/* Add transition for smooth state changes */
-#aux-widget {
-    transition: all 0.3s ease;
-    will-change: transform, opacity, filter;
-}
-
-/* Optional: Add shadow animation during transitions */
-#aux-widget.minimizing,
-#aux-widget.maximizing {
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-}
-
 /* Action Buttons */
 #action-buttons {
     display: flex;
@@ -217,53 +130,14 @@ export function injectWidgetStyles() {
 #minimize-btn img {
     width: 50px;
     height: 50px;
-    filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.5));
-    animation: glowPulse 2s ease-in-out infinite;
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease;
 }
 
 #minimize-btn:hover img {
-    filter: drop-shadow(0 0 10px rgba(255, 165, 0, 0.8));
     transform: scale(1.05);
 }
 
-/* Glowing Heartbeat Animation */
-@keyframes glowPulse {
-    0% {
-        filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.5));
-        transform: scale(1);
-    }
-    50% {
-        filter: drop-shadow(0 0 15px rgba(255, 165, 0, 0.8));
-        transform: scale(1.03);
-    }
-    100% {
-        filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.5));
-        transform: scale(1);
-    }
-}
-
-/* Optional: Add this if you want a more dramatic effect on hover */
-#minimize-btn:hover img {
-    animation: glowPulseHover 1s ease-in-out infinite;
-}
-
-@keyframes glowPulseHover {
-    0% {
-        filter: drop-shadow(0 0 10px rgba(255, 165, 0, 0.8));
-        transform: scale(1.05);
-    }
-    50% {
-        filter: drop-shadow(0 0 20px rgba(255, 165, 0, 1));
-        transform: scale(1.08);
-    }
-    100% {
-        filter: drop-shadow(0 0 10px rgba(255, 165, 0, 0.8));
-        transform: scale(1.05);
-    }
-}
-
-/* Toggle Button Styling with Enhanced Animation */
+/* Toggle Button Styling */
 #toggle-button {
     background: transparent;
     border: none;
@@ -276,12 +150,12 @@ export function injectWidgetStyles() {
 #toggle-button img {
     width: 15px;
     height: 15px;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s ease;
 }
 
-/* Rotation Animation when Active */
+/* Rotation for Toggle Button */
 #toggle-button.active img {
-    transform: rotate(180deg) scale(1.1);
+    transform: rotate(180deg);
 }
 
 /* Hover Effects */
@@ -292,11 +166,4 @@ export function injectWidgetStyles() {
 
 #toggle-button.active:hover img {
     transform: rotate(180deg) scale(1.1);
-}
-
-    `;
-
-    const styleSheet = document.createElement('style');
-    styleSheet.textContent = styles;
-    document.head.appendChild(styleSheet);
 }
